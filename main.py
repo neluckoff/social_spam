@@ -1,6 +1,7 @@
 from social_spam import Telegram
 from social_spam import Vkontakte
 from social_spam import Mail
+from social_spam import WhatsApp
 
 # tg = Telegram()
 # tg.set_message("Проверка 2")
@@ -19,10 +20,17 @@ from social_spam import Mail
 # # vk.start_selective_spam([146653997])
 # # vk.start_all_spam()
 
+
+# mail = Mail()
+# mail.connect_mail('test.spam.55@bk.ru', '2Wyp2pc3HSNvznF0znMu')
+# mail.set_message('Message from luckoff', 'How are you?')
+# mail.spam_messages(['varteego@inbox.ru', 'mikr0b@inbox.ru'])
+
 if __name__ == '__main__':
-    mail = Mail()
-    mail.connect_mail('test.spam.55@bk.ru', '2Wyp2pc3HSNvznF0znMu')
-    mail.set_message('Message from luckoff', 'How are you?')
-    mail.bombing_message('varteego@inbox.ru', 2)
+    wp = WhatsApp()
+    wp.set_message('Test')
+    wp.set_phone('+79266715859')
+    wp.send_message()
+    wp.send_message('Test 2')
 
 

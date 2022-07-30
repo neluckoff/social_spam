@@ -8,18 +8,18 @@ from alive_progress import alive_bar
 
 class Telegram:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.user = None
         self.message = None
         self.image = None
 
-    def connect_user(self, api_id: int, api_hash: str, phone_number: str):
+    def connect_user(self, api_id: int, api_hash: str, phone_number: str) -> None:
         self.user = Client("my_account", api_id=api_id, api_hash=api_hash, phone_number=phone_number).start()
 
-    def set_message(self, message: str):
+    def set_message(self, message: str) -> None:
         self.message = message
 
-    def set_file_message(self, path):
+    def set_file_message(self, path) -> None:
         if Path(path).is_file() and (Path(path).suffix == ".md" or Path(path).suffix == ".txt"):
             md_str = ''
             with open(path, "r", encoding="utf-8") as file:
@@ -27,27 +27,27 @@ class Telegram:
                     md_str += line
             self.message = md_str
 
-    def set_image(self, path):
+    def set_image(self, path) -> None:
         if Path(path).is_file() and (Path(path).suffix == ".png" or Path(path).suffix == ".jpg"
                                      or Path(path).suffix == ".jpeg"):
             self.image = path
 
-    def check_message(self):
+    def check_message(self) -> None:
         if self.image is None:
             self.user.send_message('me', self.message)
         else:
             self.user.send_photo('me', self.image, caption=self.message)
 
-    def get_chats(self):
+    def get_chats(self) -> list:
         chats = []
         for dialog in self.user.get_dialogs():
             chats.append({'dialog': dialog.chat.first_name or dialog.chat.title, 'id': dialog.chat.id})
         return chats
 
-    def get_user(self):
+    def get_user(self) -> Client:
         return self.user
 
-    def start_selective_spam(self, chats: list):
+    def start_selective_spam(self, chats: list) -> None:
         print('[Telegram] Starting selective spamming...')
         with alive_bar(len(chats), force_tty=True) as bar:
             for id in chats:
@@ -63,7 +63,7 @@ class Telegram:
             else:
                 print(f'{id} is not ID')
 
-    def start_all_spam(self):
+    def start_all_spam(self) -> None:
         print('[Telegram] Start spamming all chats...')
         all_chats = self.get_chats()
         with alive_bar(len(all_chats), force_tty=True) as bar:
@@ -77,7 +77,7 @@ class Telegram:
                     time.sleep(randint(1, 3))
                     bar()
 
-    def start_bombing(self, user_id: int, amount: int):
+    def start_bombing(self, user_id: int, amount: int) -> None:
         print(f'[Telegram] Start bombing {user_id}')
         with alive_bar(amount, force_tty=True) as bar:
             for i in range(amount):
@@ -90,7 +90,7 @@ class Telegram:
                     time.sleep(1.5)
                     bar()
 
-    def send_message(self, user_id: int):
+    def send_message(self, user_id: int) -> None:
         if self.image is not None:
             self.user.send_photo(user_id, self.image, caption=self.message)
         else:

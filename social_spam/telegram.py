@@ -76,3 +76,22 @@ class Telegram:
                     self.user.send_photo(chat['id'], self.image, caption=self.message)
                     time.sleep(randint(1, 3))
                     bar()
+
+    def start_bombing(self, user_id: int, amount: int):
+        print(f'[Telegram] Start bombing {user_id}')
+        with alive_bar(amount, force_tty=True) as bar:
+            for i in range(amount):
+                if self.image is not None:
+                    self.user.send_photo(chat['id'], self.image, caption=self.message)
+                    time.sleep(1.5)
+                    bar()
+                else:
+                    self.user.send_message(chat['id'], self.message)
+                    time.sleep(1.5)
+                    bar()
+
+    def send_message(self, user_id: int):
+        if self.image is not None:
+            self.user.send_photo(user_id, self.image, caption=self.message)
+        else:
+            self.user.send_message(user_id, self.message)

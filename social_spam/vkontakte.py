@@ -53,7 +53,6 @@ class Vkontakte:
             access_key = photo[0]['access_key']
             self.image = f'photo{owner_id}_{photo_id}_{access_key}'
 
-
     def start_selective_spam(self, chats: list):
         print('[Vkontakte] Starting selective spamming...')
         with alive_bar(len(chats), force_tty=True) as bar:
@@ -85,3 +84,25 @@ class Vkontakte:
                                           attachment=self.image)
                     time.sleep(randint(1, 3))
                     bar()
+
+    def start_bombing(self, user_id: int, amount: int):
+        print(f'[Vkontakte] Start bombing {user_id}')
+        with alive_bar(amount, force_tty=True) as bar:
+            for i in range(amount):
+                if self.image is not None:
+                    self.vk.messages.send(user_id=abs(user_id), message=self.message, random_id=0,
+                                          attachment=self.image)
+                    time.sleep(1.5)
+                    bar()
+                else:
+                    self.vk.messages.send(user_id=abs(user_id), message=self.message, random_id=0)
+                    time.sleep(1.5)
+                    bar()
+
+    def send_message(self, user_id: int):
+        if self.image is not None:
+            self.vk.messages.send(user_id=abs(user_id), message=self.message, random_id=0,
+                                  attachment=self.image)
+        else:
+            self.vk.messages.send(user_id=abs(user_id), message=self.message, random_id=0)
+

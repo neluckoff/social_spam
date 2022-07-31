@@ -104,21 +104,21 @@ class Vkontakte:
 
     def start_selective_spam(self,
                              chats: list,
-                             text: str = None,
-                             image_path: str = None
+                             message: str = None,
+                             image: str = None
                              ) -> None:
         """
         Start mailing to all elements of the array (1 message each)
 
         Args:
             chats (list): ID of all users
-            text (str): set a text message
-            image_path (str): set image to message
+            message (str): set a text message
+            image (str): set image to message
         """
-        if text is not None:
-            self.set_message(text)
-        if image_path is not None:
-            self.set_image(image_path)
+        if message is not None:
+            self.set_message(message)
+        if image is not None:
+            self.set_image(image)
 
         with alive_bar(len(chats), force_tty=True) as bar:
             for id in chats:
@@ -136,20 +136,20 @@ class Vkontakte:
                     print(f'{id} is not ID')
 
     def start_all_spam(self,
-                       text: str = None,
-                       image_path: str = None
+                       message: str = None,
+                       image: str = None
                        ) -> None:
         """
         Start sending to all chats you've ever interacted in
 
         Args:
-            text (str): set a text message
-            image_path (str): set image to message
+            message (str): set a text message
+            image (str): set image to message
         """
-        if text is not None:
-            self.set_message(text)
-        if image_path is not None:
-            self.set_image(image_path)
+        if message is not None:
+            self.set_message(message)
+        if image is not None:
+            self.set_image(image)
 
         chats = self.get_chats_id()
         with alive_bar(len(chats), force_tty=True) as bar:
@@ -167,8 +167,8 @@ class Vkontakte:
     def start_bombing(self,
                       user_id: int,
                       amount: int,
-                      text: str = None,
-                      image_path: str = None
+                      message: str = None,
+                      image: str = None
                       ) -> None:
         """
         Start bombarding one user with messages
@@ -176,13 +176,13 @@ class Vkontakte:
         Args:
              user_id (int): user ID
              amount (int): number of sent messages
-             text (str): set a text message
-             image_path (str): set image to message
+             message (str): set a text message
+             image (str): set image to message
         """
-        if text is not None:
-            self.set_message(text)
-        if image_path is not None:
-            self.set_image(image_path)
+        if message is not None:
+            self.set_message(message)
+        if image is not None:
+            self.set_image(image)
 
         with alive_bar(amount, force_tty=True) as bar:
             for i in range(amount):
@@ -198,21 +198,21 @@ class Vkontakte:
 
     def send_message(self,
                      user_id: int,
-                     text: str = None,
-                     image_path: str = None
+                     message: str = None,
+                     image: str = None
                      ) -> None:
         """
         Normally send a message to a user
 
         Args:
             user_id (int): user ID
-            text (str): set a text message
-            image_path (str): set image to message
+            message (str): set a text message
+            image (str): set image to message
         """
-        if text is not None:
-            self.set_message(text)
-        if image_path is not None:
-            self.set_image(image_path)
+        if message is not None:
+            self.set_message(message)
+        if image is not None:
+            self.set_image(image)
 
         if self.image is not None:
             self.vk.messages.send(user_id=abs(user_id), message=self.message, random_id=0,

@@ -1,4 +1,15 @@
-from social_spam.telegram import Telegram
-from social_spam.vkontakte import Vkontakte
-from social_spam.mail import Mail
-from social_spam.whatsapp import WhatsApp
+"""
+:authors: neluckoff
+:email: neluckoff@gmail.com
+
+:copyright: (c) 2022 neluckoff
+"""
+
+from .telegram import Telegram
+from .vkontakte import Vkontakte
+from .mail import Mail
+from .whatsapp import WhatsApp
+
+__author__ = 'neluckoff'
+__version__ = '1.0.0'
+__email__ = 'neluckoff@gmail.com'

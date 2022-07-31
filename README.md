@@ -28,6 +28,11 @@ You can install the latest version with the command:
 ```shell
 pip install social-spam
 ```
+Or you can install from GitHub:
+
+```shell
+pip install -U https://github.com/neluckoff/social_spam/archive/master.zip
+```
 
 ## Sending an email
 - **[More examples here!](https://github.com/neluckoff/social_spam/blob/master/examples/)**

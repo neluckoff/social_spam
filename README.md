@@ -3,12 +3,16 @@
     Package for convenient work with messages in all popular instant messengers
 </div>
 &nbsp;
+
 <div align="center">
     <a href="https://github.com/neluckoff/social_spam/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/neluckoff/social_spam?style=flat-square"></a>
     <a href="https://github.com/neluckoff/social_spam/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/neluckoff/social_spam?style=flat-square"></a>
     <a href="https://github.com/neluckoff/social_spam"><img alt="GitHub license" src="https://img.shields.io/github/license/neluckoff/social_spam?style=flat-square"></a>
     <a href="https://github.com/neluckoff/social_spam/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/neluckoff/social_spam?style=flat-square"></a>
 </div>
+&nbsp;
+
+<i>On the current version, you have access to the following messengers: Telegram, WhatsApp, Vkontakte, Email.</i>
 
 ## Documentation
 If you want to get acquainted with examples of using this package, you can follow the link of interest.

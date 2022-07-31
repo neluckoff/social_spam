@@ -28,3 +28,26 @@ You can install the latest version with the command:
 ```shell
 pip install social-spam
 ```
+
+## Sending an email
+- **[More examples here!](https://github.com/neluckoff/social_spam/blob/master/examples/)**
+
+```python
+from social_spam import Mail
+
+mail = Mail()
+mail.connect_mail('test@inbox.ru', 'my_password')
+
+mail.set_message('Message from luckoff', 'How are you?')
+mail.send_message('friend@gmail.com')
+```
+
+## Contributing
+I have a positive attitude towards PR and pull requests. Glad to see that people like the package.
+
+- Creator: [@neluckoff](https://github.com/neluckoff)
+
+## License
+
+- Copyright © 2022 [neluckoff](https://github.com/neluckoff).
+- This project is [MIT](https://github.com/neluckoff/social_spam/blob/master/LICENSE.md) licensed.

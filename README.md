@@ -35,7 +35,7 @@ pip install -U https://github.com/neluckoff/social_spam/archive/master.zip
 ```
 
 ## Sending an email
-- **[More examples here!](https://github.com/neluckoff/social_spam/blob/master/examples/)**
+**[More examples here!](https://github.com/neluckoff/social_spam/blob/master/examples/)**
 
 ```python
 from social_spam import Mail
@@ -43,7 +43,7 @@ from social_spam import Mail
 mail = Mail()
 mail.connect_mail('test@inbox.ru', 'my_password')
 
-mail.set_message('Message from luckoff', 'How are you?')
+mail.set_message('Message from luckoff', 'How are you?', ['image.png'])
 mail.send_message('friend@gmail.com')
 ```
 

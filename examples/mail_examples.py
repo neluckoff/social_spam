@@ -5,7 +5,12 @@ mail.connect_mail('test@inbox.ru', 'my_password')
 # use a separate password for applications as a password
 
 mail.set_message('Message from luckoff', 'How are you?')
-# Structure: set_message(header, message)
+# Structure: set_message(header, message, attachments)
+# or
+mail.set_message('Message from luckoff', 'How are you?', ['tetx.txt', 'image.png'])
+# or you can use html layout
+mail.set_message_html('Click me', 'template.html')
+# Structure: set_message_html(header, html_path, attachments)
 
 # The second variation of sending a message
 mail.send_message('friend@gmail.com')

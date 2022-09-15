@@ -15,8 +15,11 @@ vk.set_message('Hi!')
 vk.set_image('./image.png')
 vk.send_message(146653997)
 
+# Get name by user ID
+name = vk.get_name_by_id(146653997)['first_name']
+
 # The second variation of sending a message
-vk.send_message(146653997, message='Hi!', image='./image.png')
+vk.send_message(146653997, message=f'Hi, {name}!', image='./image.png')
 
 # Start spamming by user list
 vk.start_selective_spam([146653997, 146653998, 146653999])

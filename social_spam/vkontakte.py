@@ -45,6 +45,19 @@ class Vkontakte:
             chats.append(chat['id'])
         return chats
 
+    def get_name_by_id(self, user_id: int) -> list:
+        """
+        Method for obtaining data about a person by his ID
+
+        Args:
+            user_id (int): user ID
+
+        Return:
+            list: person information
+        """
+        user = self.user.method("users.get", {"user_ids": user_id})[0]
+        return user
+
     def set_message(self, message: str) -> None:
         """
         Set the message to be used in further mailing

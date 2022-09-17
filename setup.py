@@ -1,7 +1,7 @@
 from io import open
 from setuptools import setup
 
-version = '1.2.1'
+version = '1.2.2'
 
 with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
@@ -26,7 +26,7 @@ setup(
     license='MIT License, see LICENSE file',
 
     packages=['social_spam'],
-    install_requires=['alive_progress', 'pyrogram', 'vk-api', 'pywhatkit', 'TgCrypto', 'pywin32'],
+    install_requires=['alive_progress', 'pyrogram', 'vk-api', 'pywhatkit', 'TgCrypto'],
 
     classifiers=[
         'License :: OSI Approved :: MIT License',

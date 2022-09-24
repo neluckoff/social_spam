@@ -13,8 +13,9 @@ tg.set_message("Hi! I'm using social_spam package")
 tg.set_image('C:/Users/user/Desktop/img.png')
 tg.send_message(358984161)
 
-# The second variation of sending a message
-tg.send_message(user_id=358984161, message="Hi! I'm using social_spam package",
+# The second option for sending a message with ID taken by phone number
+user_id = tg.get_id_by_phone('79269019999')
+tg.send_message(user_id=user_id, message="Hi! I'm using social_spam package",
                 image='C:/Users/user/Desktop/img.png')
 
 # Start spamming by user list

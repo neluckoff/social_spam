@@ -1,9 +1,12 @@
+import json
+import tempfile
 import time
 
 from pyrogram import Client
 from random import randint
 from pathlib import Path
 from alive_progress import alive_bar
+from pyrogram.types import InputPhoneContact
 
 
 class Telegram:
@@ -219,3 +222,30 @@ class Telegram:
             self.user.send_photo(user_id, self.image, caption=self.message)
         else:
             self.user.send_message(user_id, self.message)
+
+    def get_id_by_phone(self, phone_num: str) -> int:
+        """
+        Method for getting a user's ID by his number (adds this contact to you in telegram chats,
+        and then deletes it - it's better not to test on your contacts)
+
+        Args:
+            phone_num (str): phone number of interest
+        Return:
+            str: ID by number
+        """
+        temp_contact_name = tempfile.NamedTemporaryFile().name.split('\\')[-1]
+        good_res = list()
+        self.user.import_contacts([InputPhoneContact(phone=phone_num, first_name=temp_contact_name)])
+        contacts = self.user.get_contacts()
+        for contact in contacts:
+            contact_data = json.loads(str(contact))
+            if contact_data['first_name'] == temp_contact_name:
+                good_res.append(contact_data)
+                self.user.delete_contacts(contact_data['id'])
+
+        try:
+            good_res = int(good_res[0]['id'])
+        except:
+            good_res = None
+
+        return good_res

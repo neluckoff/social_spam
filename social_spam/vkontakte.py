@@ -118,7 +118,8 @@ class Vkontakte:
     def start_selective_spam(self,
                              chats: list,
                              message: str = None,
-                             image: str = None
+                             image: str = None,
+                             delay_time: float = 1
                              ) -> None:
         """
         Start mailing to all elements of the array (1 message each)
@@ -127,6 +128,7 @@ class Vkontakte:
             chats (list): ID of all users
             message (str): set a text message
             image (str): set image to message
+            delay_time (float): delay time between sending emails
         """
         if message is not None:
             self.set_message(message)
@@ -138,19 +140,20 @@ class Vkontakte:
                 if str(abs(id)).isdigit():
                     if self.image is None:
                         self.vk.messages.send(user_id=abs(id), message=self.message, random_id=0)
-                        time.sleep(randint(1, 3))
+                        time.sleep(delay_time)
                         bar()
                     else:
                         self.vk.messages.send(user_id=abs(id), message=self.message, random_id=0,
                                               attachment=self.image)
-                        time.sleep(randint(1, 3))
+                        time.sleep(delay_time)
                         bar()
                 else:
                     print(f'{id} is not ID')
 
     def start_all_spam(self,
                        message: str = None,
-                       image: str = None
+                       image: str = None,
+                       delay_time: float = 1
                        ) -> None:
         """
         Start sending to all chats you've ever interacted in
@@ -158,6 +161,7 @@ class Vkontakte:
         Args:
             message (str): set a text message
             image (str): set image to message
+            delay_time (float): delay time between sending emails
         """
         if message is not None:
             self.set_message(message)
@@ -169,19 +173,20 @@ class Vkontakte:
             for chat in chats:
                 if self.image is None:
                     self.vk.messages.send(user_id=abs(chat), message=self.message, random_id=0)
-                    time.sleep(randint(1, 3))
+                    time.sleep(delay_time)
                     bar()
                 else:
                     self.vk.messages.send(user_id=abs(chat), message=self.message, random_id=0,
                                           attachment=self.image)
-                    time.sleep(randint(1, 3))
+                    time.sleep(delay_time)
                     bar()
 
     def start_bombing(self,
                       user_id: int,
                       amount: int,
                       message: str = None,
-                      image: str = None
+                      image: str = None,
+                      delay_time: float = 1
                       ) -> None:
         """
         Start bombarding one user with messages
@@ -191,6 +196,7 @@ class Vkontakte:
              amount (int): number of sent messages
              message (str): set a text message
              image (str): set image to message
+             delay_time (float): delay time between sending emails
         """
         if message is not None:
             self.set_message(message)
@@ -202,11 +208,11 @@ class Vkontakte:
                 if self.image is not None:
                     self.vk.messages.send(user_id=abs(user_id), message=self.message, random_id=0,
                                           attachment=self.image)
-                    time.sleep(1.5)
+                    time.sleep(delay_time)
                     bar()
                 else:
                     self.vk.messages.send(user_id=abs(user_id), message=self.message, random_id=0)
-                    time.sleep(1.5)
+                    time.sleep(delay_time)
                     bar()
 
     def send_message(self,

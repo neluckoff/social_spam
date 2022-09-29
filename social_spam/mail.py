@@ -128,33 +128,35 @@ class Mail:
         self.server.sendmail(self.username, mail_receiver, self.message.as_string())
         self.server.quit()
 
-    def spam_messages(self, mail_receiver: list) -> None:
+    def spam_messages(self, mail_receiver: list, delay_time: float = 1) -> None:
         """
         Start mailing to all elements of the array (1 message each)
 
         Args:
             mail_receiver (list): everyone's email
+            delay_time (float): delay time between sending emails
         """
         self.server.login(self.username, self.password)
         with alive_bar(len(mail_receiver), force_tty=True) as bar:
             for user in mail_receiver:
                 self.server.sendmail(self.username, user, self.message.as_string())
-                time.sleep(1)
+                time.sleep(delay_time)
                 bar()
         self.server.quit()
 
-    def bombing_message(self, mail_receiver: str, amount: int) -> None:
+    def bombing_message(self, mail_receiver: str, amount: int, delay_time: float = 1) -> None:
         """
         Start bombarding one user with messages
 
         Args:
              mail_receiver (str): email
              amount (int): number of sent messages
+             delay_time (float): delay time between sending emails
         """
         self.server.login(self.username, self.password)
         with alive_bar(amount, force_tty=True) as bar:
             for i in range(amount):
                 self.server.sendmail(self.username, mail_receiver, self.message.as_string())
-                time.sleep(1)
+                time.sleep(delay_time)
                 bar()
         self.server.quit()

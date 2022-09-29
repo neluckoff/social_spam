@@ -16,7 +16,7 @@ mail.set_message_html('Click me', 'template.html')
 mail.send_message('friend@gmail.com')
 
 # Start spamming by user list
-mail.spam_messages(['friend1@gmail.com', 'friend2@gmail.com', 'friend3@gmail.com'])
+mail.spam_messages(['friend1@gmail.com', 'friend2@gmail.com', 'friend3@gmail.com'], delay_time=1.5)
 
 # Start bombarding one user with messages
 mail.bombing_message('friend@gmail.com', 100)

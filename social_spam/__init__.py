@@ -11,5 +11,5 @@ from .mail import Mail
 from .whatsapp import WhatsApp
 
 __author__ = 'neluckoff'
-__version__ = '1.2.3'
+__version__ = '1.2.4'
 __email__ = 'neluckoff@gmail.com'

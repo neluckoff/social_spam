@@ -94,6 +94,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Lazy loading pattern for external dependencies
 - Better resource management (SMTP connections)
 - Improved code structure and maintainability
+- **Modern Build System**: Migrated to pyproject.toml (PEP 621)
+  - Added `pyproject.toml` for modern packaging
+  - Added `MANIFEST.in` for proper file inclusion
+  - Improved GitHub Actions publish workflow with pre-publish tests
+  - Added local build verification scripts
+  - Added comprehensive publishing documentation
 
 ## [1.2.4] - 2022
 

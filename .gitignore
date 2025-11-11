@@ -136,9 +136,7 @@ Thumbs.db
 # Pyrogram session files
 *.session
 *.session-journal
-my_account.session*
 
-# Test files (but not the tests/ directory)
-/test_*.py
-/*_test.py
-
+# Local test files
+test_*.txt
+temp_*

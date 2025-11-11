@@ -1,0 +1,26 @@
+# Include documentation and metadata
+include README.md
+include LICENSE.md
+include CHANGELOG.md
+include requirements.txt
+include pyproject.toml
+
+# Include examples
+recursive-include examples *.py
+recursive-include examples *.md
+
+# Exclude development and build files
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *$py.class
+global-exclude *.so
+global-exclude .DS_Store
+
+# Exclude development directories
+prune .github
+prune tests
+prune .git
+prune dist
+prune build
+prune *.egg-info
+

@@ -1,0 +1,111 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "social-spam"
+version = "1.3.0"
+description = "Powerful Python package for messaging across multiple platforms (Telegram, VKontakte, WhatsApp, Email)"
+readme = "README.md"
+authors = [
+    {name = "neluckoff", email = "neluckoff@gmail.com"}
+]
+maintainers = [
+    {name = "neluckoff", email = "neluckoff@gmail.com"}
+]
+license = {text = "MIT"}
+keywords = [
+    "telegram", "vkontakte", "whatsapp", "email", "messaging",
+    "spam", "bulk-send", "mass-messaging", "social-media",
+    "pyrogram", "vk-api", "pywhatkit", "smtp"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Communications",
+    "Topic :: Communications :: Chat",
+    "Topic :: Communications :: Email",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "alive-progress>=3.0.0",
+    "pyrogram>=2.0.0",
+    "vk-api>=11.9.0",
+    "pywhatkit>=5.0"
+]
+
+[project.optional-dependencies]
+telegram_speedup = ["TgCrypto>=1.2.0"]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "flake8>=6.0.0",
+    "black>=23.0.0",
+    "mypy>=1.0.0"
+]
+all = ["TgCrypto>=1.2.0"]
+
+[project.urls]
+Homepage = "https://github.com/neluckoff/social_spam"
+Documentation = "https://github.com/neluckoff/social_spam/tree/master/docs"
+Repository = "https://github.com/neluckoff/social_spam"
+Download = "https://github.com/neluckoff/social_spam/archive/master.zip"
+Changelog = "https://github.com/neluckoff/social_spam/blob/master/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/neluckoff/social_spam/issues"
+
+[tool.setuptools]
+packages = ["social_spam"]
+zip-safe = false
+
+[tool.setuptools.package-data]
+social_spam = ["py.typed"]
+
+[tool.black]
+line-length = 120
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+

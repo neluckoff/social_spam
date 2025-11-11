@@ -6,38 +6,116 @@ on:
   workflow_dispatch:  # Allow manual trigger
 
 jobs:
-  build-and-publish:
+  # Run tests before publishing
+  test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
     
     steps:
     - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install package
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Test imports
+      run: python tests/test_imports.py
+
+  # Build and publish
+  build-and-publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for trusted publishing
+      contents: read
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Get all history for proper version detection
     
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
     
-    - name: Install dependencies
+    - name: Install build dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install build twine
+        pip install build twine check-wheel-contents
+
+    - name: Verify version consistency
+      run: |
+        VERSION_PYPROJECT=$(grep '^version = ' pyproject.toml | cut -d'"' -f2)
+        echo "Version in pyproject.toml: $VERSION_PYPROJECT"
+        
+        if [ "${{ github.event_name }}" = "release" ]; then
+          RELEASE_TAG="${{ github.event.release.tag_name }}"
+          RELEASE_VERSION="${RELEASE_TAG#v}"
+          echo "Release version: $RELEASE_VERSION"
+          
+          if [ "$VERSION_PYPROJECT" != "$RELEASE_VERSION" ]; then
+            echo "Error: Version mismatch!"
+            echo "  pyproject.toml: $VERSION_PYPROJECT"
+            echo "  Release tag: $RELEASE_VERSION"
+            exit 1
+          fi
+        fi
     
     - name: Build package
       run: python -m build
     
-    - name: Check package
-      run: twine check dist/*
+    - name: Check package integrity
+      run: |
+        twine check dist/*
+        check-wheel-contents dist/*.whl
+    
+    - name: List package contents
+      run: |
+        echo "=== Built packages ==="
+        ls -lh dist/
+        echo ""
+        echo "=== Wheel contents ==="
+        unzip -l dist/*.whl || true
+    
+    - name: Publish to Test PyPI (dry run)
+      if: github.event_name == 'workflow_dispatch'
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        TWINE_REPOSITORY: testpypi
+      run: |
+        echo "Would publish to Test PyPI (dry run)"
+        twine check dist/*
+        # Uncomment to actually publish to Test PyPI:
+        # twine upload --repository testpypi dist/*
     
     - name: Publish to PyPI
       if: github.event_name == 'release'
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-      run: twine upload dist/*
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        print-hash: true
+        verbose: true
     
-    - name: Upload artifacts
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: dist-packages
+        name: dist-packages-${{ github.sha }}
         path: dist/
+        retention-days: 90
+    
+    - name: Create release assets
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/*
 

@@ -35,7 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # Required for trusted publishing
-      contents: read
+      contents: write  # Required for creating release assets
+      attestations: write  # Required for attestations
     
     steps:
     - uses: actions/checkout@v4
@@ -102,9 +103,11 @@ jobs:
       if: github.event_name == 'release'
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        password: ${{ secrets.PYPI_API_TOKEN }}
+        # Use Trusted Publishing if configured, otherwise fall back to API token
+        password: ${{ secrets.PYPI_API_TOKEN || '' }}
         print-hash: true
         verbose: true
+        attestations: true
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -115,7 +118,9 @@ jobs:
     
     - name: Create release assets
       if: github.event_name == 'release'
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: dist/*
+        fail_on_unmatched_files: false
+        generate_release_notes: false
 

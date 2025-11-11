@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Install with: `pip install social-spam[telegram_speedup]`
   - CI tests now more reliable across all platforms
 
+- **CI/CD**: Improved test matrix
+  - Python 3.8 excluded from macOS tests (PyObjC requires 3.9+)
+  - All other combinations still fully tested
+
 ### Changed
 - **Python Support**: Updated minimum Python version to 3.8
   - Added support for Python 3.9, 3.10, 3.11, and 3.12

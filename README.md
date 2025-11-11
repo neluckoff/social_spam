@@ -108,6 +108,8 @@ pip install -U https://github.com/neluckoff/social_spam/archive/master.zip
 
 > **Note:** `TgCrypto` is optional. Telegram works fine without it, but it can be 2-3x faster for bulk operations. If installation fails on your system, the base package will work perfectly.
 
+> **macOS users:** Python 3.8 on macOS may have issues with `pywhatkit` dependencies (PyObjC requires 3.9+). We recommend Python 3.9+ for macOS.
+
 ---
 
 ## 🚀 Quick Start

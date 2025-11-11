@@ -30,9 +30,11 @@ setup(
         'alive-progress>=3.0.0',
         'pyrogram>=2.0.0',
         'vk-api>=11.9.0',
-        'pywhatkit>=5.0',
-        'TgCrypto>=1.2.0'
+        'pywhatkit>=5.0'
     ],
+    extras_require={
+        'telegram_speedup': ['TgCrypto>=1.2.0']
+    },
     python_requires='>=3.8',
 
     classifiers=[

@@ -49,18 +49,47 @@ Supports: Telegram, VKontakte, WhatsApp, Email
 
 ## 🆕 What's New in v1.3.0
 
-🎉 **Major Update** - Completely modernized and fixed!
+🎉 **Major Update** - Completely modernized with 15+ new methods!
 
 ```diff
++ ✅ 15 new methods across all modules
++ ✅ Email: TLS, CC/BCC, Priority, Templates
++ ✅ Telegram: Documents, Video, Audio, Formatting, User Info
++ ✅ VKontakte: Documents, Audio, Friends, User Info
++ ✅ WhatsApp: File loading, Custom delays
 + ✅ Fixed all import issues (pywhatkit, Mail)
 + ✅ Python 3.8-3.12 support (including latest versions)
 + ✅ Pyrogram 2.0+ compatibility
++ ✅ TgCrypto now optional (better cross-platform support)
 + ✅ All dependencies updated to latest stable versions
 + ✅ Improved error handling and resource management
-+ ✅ Better performance and reliability
 ```
 
 📖 See [CHANGELOG.md](CHANGELOG.md) for complete details
+
+## 🌟 New Features Highlights
+
+### 📧 Email - Enhanced
+- **TLS Support** - Gmail, Outlook compatible (`use_tls=True`)
+- **Message Priority** - Mark urgent/normal/low
+- **CC/BCC** - Send copies to multiple recipients
+- **Templates** - Use `{{variables}}` for personalization
+
+### 💬 Telegram - Expanded
+- **Documents** - Send PDFs, DOCX, ZIP, any files
+- **Video & Audio** - MP4, MP3, and more
+- **Text Formatting** - Markdown & HTML support
+- **User Info** - Get detailed user profiles
+
+### 🔵 VKontakte - Upgraded
+- **Documents** - Share files with contacts
+- **Voice Messages** - Send audio messages
+- **Friends API** - Get and manage friends list
+- **User Profiles** - Fetch detailed user information
+
+### 📲 WhatsApp - Improved
+- **File Messages** - Load from .txt/.md files
+- **Custom Delays** - Fine-tune timing control
 
 ## 📦 Installation
 
@@ -68,11 +97,16 @@ Supports: Telegram, VKontakte, WhatsApp, Email
 # Install from PyPI (recommended)
 pip install social-spam
 
+# With optional Telegram speedup (TgCrypto)
+pip install social-spam[telegram_speedup]
+
 # Or install from GitHub for latest dev version
 pip install -U https://github.com/neluckoff/social_spam/archive/master.zip
 ```
 
 **Requirements:** Python 3.8+
+
+> **Note:** `TgCrypto` is optional. Telegram works fine without it, but it can be 2-3x faster for bulk operations. If installation fails on your system, the base package will work perfectly.
 
 ---
 
@@ -83,17 +117,27 @@ pip install -U https://github.com/neluckoff/social_spam/archive/master.zip
 ```python
 from social_spam import Mail
 
-# Initialize and connect
+# Initialize and connect (with TLS for Gmail)
 mail = Mail()
-mail.connect_mail('your_email@inbox.ru', 'your_password')
+mail.set_server('smtp.gmail.com', 587, use_tls=True)
+mail.connect_mail('your@gmail.com', 'app_password')
 
 # Send a simple message
 mail.set_message('Hello!', 'How are you?')
 mail.send_message('friend@gmail.com')
 
-# Send with attachments
-mail.set_message('Check this out!', 'See attached files', ['photo.jpg', 'document.pdf'])
-mail.send_message('friend@gmail.com')
+# Send with priority and CC
+mail.set_message('Urgent!', 'Please review ASAP')
+mail.set_priority('urgent')
+mail.send_message_with_cc_bcc(
+    to='boss@company.com',
+    cc=['team@company.com']
+)
+
+# Use templates for personalization
+template = "Hello {{name}}, your code is {{code}}"
+mail.set_template_message('Code', template, {'name': 'John', 'code': '1234'})
+mail.send_message('john@example.com')
 ```
 
 ### 💬 Telegram Example
@@ -109,19 +153,32 @@ tg.connect_user(
     phone_number="+1234567890"
 )
 
-# Send a message
-tg.send_message(user_id=123456789, message="Hello from social_spam!")
-
-# Send with image
+# Send formatted message with document
 tg.send_message(
-    user_id=123456789, 
-    message="Check out this image!",
-    image="path/to/image.png"
+    user_id=123456789,
+    message="**Important!** Read the `report.pdf`",
+    document="report.pdf",
+    parse_mode='markdown'
 )
 
-# Mass messaging
+# Send video with caption
+tg.send_message(
+    user_id=123456789,
+    message="Check out this video!",
+    video="video.mp4"
+)
+
+# Get user information
+user_info = tg.get_user_info(123456789)
+print(f"User: {user_info['username']}, Premium: {user_info['is_premium']}")
+
+# Mass messaging with formatting
 user_ids = [111111, 222222, 333333]
-tg.start_selective_spam(user_ids, message="Hello everyone!")
+tg.start_selective_spam(
+    chats=user_ids,
+    message="__Hello__ everyone!",
+    parse_mode='markdown'
+)
 ```
 
 ### 🔵 VKontakte Example
@@ -133,14 +190,24 @@ from social_spam import Vkontakte
 vk = Vkontakte()
 vk.connect_user(token="your_vk_token")
 
-# Send message
-vk.send_message(user_id=123456, message="Привет!")
-
-# Send to multiple users
-vk.start_selective_spam(
-    chats=[111111, 222222], 
-    message="Всем привет!"
+# Send document
+vk.send_message(
+    user_id=123456,
+    message="Вот файл",
+    document="document.pdf"
 )
+
+# Get friends and send to all
+friends = vk.get_friends()
+friend_ids = [f['id'] for f in friends]
+vk.start_selective_spam(
+    chats=friend_ids,
+    message="Привет всем друзьям!"
+)
+
+# Get user info
+user_info = vk.get_user_info(123456)
+print(f"User: {user_info['first_name']} {user_info['last_name']}")
 ```
 
 ### 📲 WhatsApp Example
@@ -150,10 +217,17 @@ from social_spam import WhatsApp
 
 wa = WhatsApp()
 
-# Send instant message
-wa.send_message(
-    phone="+1234567890",
-    text="Hello from Python!"
+# Load message from file
+wa.set_file_message('message.txt')
+wa.send_message(phone="+1234567890")
+
+# Send with custom delays
+wa.start_bombing(
+    phone_number="+1234567890",
+    amount=5,
+    text="Hello!",
+    wait_time=10,
+    close_time=2
 )
 
 # Send with image
@@ -217,12 +291,59 @@ tg.start_bombing(user_id=123456, amount=10, message="Hello!")
 </details>
 
 <details>
-<summary><b>Custom SMTP Server</b></summary>
+<summary><b>Custom SMTP Server with TLS</b></summary>
 
 ```python
 mail = Mail()
-mail.set_server('smtp.gmail.com', 587)  # Custom server
+mail.set_server('smtp.gmail.com', 587, use_tls=True)  # TLS support
 mail.connect_mail('your@gmail.com', 'app_password')
+```
+</details>
+
+<details>
+<summary><b>Telegram with Formatted Messages</b></summary>
+
+```python
+tg = Telegram()
+tg.connect_user(api_id=12345, api_hash="hash", phone_number="+123")
+
+# Markdown formatting
+message = """
+**Important Announcement!**
+
+__Details:__
+• Item 1
+• Item 2
+
+Check the `report.pdf`
+"""
+
+tg.send_message(
+    user_id=123456,
+    message=message,
+    document='report.pdf',
+    parse_mode='markdown'
+)
+```
+</details>
+
+<details>
+<summary><b>VKontakte Friends Management</b></summary>
+
+```python
+vk = Vkontakte()
+vk.connect_user(token="your_token")
+
+# Get all friends
+friends = vk.get_friends()
+print(f"You have {len(friends)} friends")
+
+# Send to specific friends
+for friend in friends[:10]:
+    vk.send_message(
+        user_id=friend['id'],
+        message=f"Привет, {friend['first_name']}!"
+    )
 ```
 </details>
 

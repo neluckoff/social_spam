@@ -2,5 +2,7 @@ alive-progress>=3.0.0
 pyrogram>=2.0.0
 vk-api>=11.9.0
 pywhatkit>=5.0
-TgCrypto>=1.2.0
+
+# Optional: TgCrypto for faster Telegram encryption (may fail on some platforms)
+# TgCrypto>=1.2.0
 

@@ -18,6 +18,10 @@ class Telegram:
         self.user = None
         self.message = None
         self.image = None
+        self.document = None
+        self.video = None
+        self.audio = None
+        self.parse_mode = None
 
     def connect_user(self,
                      api_id: int,
@@ -76,6 +80,48 @@ class Telegram:
                                      or Path(path).suffix == ".jpeg"):
             self.image = path
 
+    def set_document(self, path: str) -> None:
+        """
+        Attach document to message
+
+        Args:
+            path (str): document path (any file type)
+        """
+        if Path(path).is_file():
+            self.document = path
+
+    def set_video(self, path: str) -> None:
+        """
+        Attach video to message
+
+        Args:
+            path (str): video path (mp4, avi, mkv, etc.)
+        """
+        if Path(path).is_file() and (Path(path).suffix in [".mp4", ".avi", ".mkv", ".mov", ".flv"]):
+            self.video = path
+
+    def set_audio(self, path: str) -> None:
+        """
+        Attach audio to message
+
+        Args:
+            path (str): audio path (mp3, wav, ogg, etc.)
+        """
+        if Path(path).is_file() and (Path(path).suffix in [".mp3", ".wav", ".ogg", ".m4a", ".flac"]):
+            self.audio = path
+
+    def set_parse_mode(self, mode: str = None) -> None:
+        """
+        Set text formatting mode
+        
+        Args:
+            mode (str): 'markdown', 'html', or None for plain text
+        """
+        if mode and mode.lower() in ['markdown', 'html']:
+            self.parse_mode = mode.lower()
+        else:
+            self.parse_mode = None
+
     def check_message(self) -> None:
         """
         Check the finished message
@@ -83,10 +129,18 @@ class Telegram:
         Sends a ready-made text to himself
         in private messages
         """
-        if self.image is None:
-            self.user.send_message('me', self.message)
+        kwargs = {'parse_mode': self.parse_mode} if self.parse_mode else {}
+        
+        if self.image:
+            self.user.send_photo('me', self.image, caption=self.message, **kwargs)
+        elif self.video:
+            self.user.send_video('me', self.video, caption=self.message, **kwargs)
+        elif self.document:
+            self.user.send_document('me', self.document, caption=self.message, **kwargs)
+        elif self.audio:
+            self.user.send_audio('me', self.audio, caption=self.message, **kwargs)
         else:
-            self.user.send_photo('me', self.image, caption=self.message)
+            self.user.send_message('me', self.message, **kwargs)
 
     def get_chats(self) -> list:
         """
@@ -113,6 +167,10 @@ class Telegram:
                              chats: list,
                              message: str = None,
                              image: str = None,
+                             document: str = None,
+                             video: str = None,
+                             audio: str = None,
+                             parse_mode: str = None,
                              delay_time: float = 1.5
                              ) -> None:
         """
@@ -122,30 +180,52 @@ class Telegram:
             chats (list): ID of all users
             message (str): set a text message
             image (str): set image to message
+            document (str): set document to message
+            video (str): set video to message
+            audio (str): set audio to message
+            parse_mode (str): 'markdown', 'html', or None
             delay_time (float): delay time between sending emails
         """
         if message is not None:
             self.set_message(message)
         if image is not None:
             self.set_image(image)
+        if document is not None:
+            self.set_document(document)
+        if video is not None:
+            self.set_video(video)
+        if audio is not None:
+            self.set_audio(audio)
+        if parse_mode is not None:
+            self.set_parse_mode(parse_mode)
+
+        kwargs = {'parse_mode': self.parse_mode} if self.parse_mode else {}
 
         with alive_bar(len(chats), force_tty=True) as bar:
             for id in chats:
                 if str(id).isdigit():
-                    if self.image is not None:
-                        self.user.send_photo(id, self.image, caption=self.message)
-                        time.sleep(delay_time)
-                        bar()
+                    if self.image:
+                        self.user.send_photo(id, self.image, caption=self.message, **kwargs)
+                    elif self.video:
+                        self.user.send_video(id, self.video, caption=self.message, **kwargs)
+                    elif self.document:
+                        self.user.send_document(id, self.document, caption=self.message, **kwargs)
+                    elif self.audio:
+                        self.user.send_audio(id, self.audio, caption=self.message, **kwargs)
                     else:
-                        self.user.send_message(id, self.message)
-                        time.sleep(delay_time)
-                        bar()
+                        self.user.send_message(id, self.message, **kwargs)
+                    time.sleep(delay_time)
+                    bar()
                 else:
                     print(f'{id} is not ID')
 
     def start_all_spam(self,
                        message: str = None,
                        image: str = None,
+                       document: str = None,
+                       video: str = None,
+                       audio: str = None,
+                       parse_mode: str = None,
                        delay_time: float = 1.5
                        ) -> None:
         """
@@ -154,30 +234,52 @@ class Telegram:
         Args:
             message (str): set a text message
             image (str): set image to message
+            document (str): set document to message
+            video (str): set video to message
+            audio (str): set audio to message
+            parse_mode (str): 'markdown', 'html', or None
             delay_time (float): delay time between sending emails
         """
         if message is not None:
             self.set_message(message)
         if image is not None:
             self.set_image(image)
+        if document is not None:
+            self.set_document(document)
+        if video is not None:
+            self.set_video(video)
+        if audio is not None:
+            self.set_audio(audio)
+        if parse_mode is not None:
+            self.set_parse_mode(parse_mode)
 
+        kwargs = {'parse_mode': self.parse_mode} if self.parse_mode else {}
         all_chats = self.get_chats()
+        
         with alive_bar(len(all_chats), force_tty=True) as bar:
             for chat in all_chats:
-                if self.image is None:
-                    self.user.send_message(chat['id'], self.message)
-                    time.sleep(delay_time)
-                    bar()
+                if self.image:
+                    self.user.send_photo(chat['id'], self.image, caption=self.message, **kwargs)
+                elif self.video:
+                    self.user.send_video(chat['id'], self.video, caption=self.message, **kwargs)
+                elif self.document:
+                    self.user.send_document(chat['id'], self.document, caption=self.message, **kwargs)
+                elif self.audio:
+                    self.user.send_audio(chat['id'], self.audio, caption=self.message, **kwargs)
                 else:
-                    self.user.send_photo(chat['id'], self.image, caption=self.message)
-                    time.sleep(delay_time)
-                    bar()
+                    self.user.send_message(chat['id'], self.message, **kwargs)
+                time.sleep(delay_time)
+                bar()
 
     def start_bombing(self,
                       user_id: int,
                       amount: int,
                       message: str = None,
                       image: str = None,
+                      document: str = None,
+                      video: str = None,
+                      audio: str = None,
+                      parse_mode: str = None,
                       delay_time: float = 1.5
                       ) -> None:
         """
@@ -188,28 +290,50 @@ class Telegram:
              amount (int): number of sent messages
              message (str): set a text message
              image (str): set image to message
+             document (str): set document to message
+             video (str): set video to message
+             audio (str): set audio to message
+             parse_mode (str): 'markdown', 'html', or None
              delay_time (float): delay time between sending emails
         """
         if message is not None:
             self.set_message(message)
         if image is not None:
             self.set_image(image)
+        if document is not None:
+            self.set_document(document)
+        if video is not None:
+            self.set_video(video)
+        if audio is not None:
+            self.set_audio(audio)
+        if parse_mode is not None:
+            self.set_parse_mode(parse_mode)
+
+        kwargs = {'parse_mode': self.parse_mode} if self.parse_mode else {}
 
         with alive_bar(amount, force_tty=True) as bar:
             for i in range(amount):
-                if self.image is not None:
-                    self.user.send_photo(user_id, self.image, caption=self.message)
-                    time.sleep(delay_time)
-                    bar()
+                if self.image:
+                    self.user.send_photo(user_id, self.image, caption=self.message, **kwargs)
+                elif self.video:
+                    self.user.send_video(user_id, self.video, caption=self.message, **kwargs)
+                elif self.document:
+                    self.user.send_document(user_id, self.document, caption=self.message, **kwargs)
+                elif self.audio:
+                    self.user.send_audio(user_id, self.audio, caption=self.message, **kwargs)
                 else:
-                    self.user.send_message(user_id, self.message)
-                    time.sleep(delay_time)
-                    bar()
+                    self.user.send_message(user_id, self.message, **kwargs)
+                time.sleep(delay_time)
+                bar()
 
     def send_message(self,
                      user_id: int,
                      message: str = None,
-                     image: str = None
+                     image: str = None,
+                     document: str = None,
+                     video: str = None,
+                     audio: str = None,
+                     parse_mode: str = None
                      ) -> None:
         """
         Normally send a message to a user
@@ -218,16 +342,36 @@ class Telegram:
             user_id (int): user ID
             message (str): set a text message
             image (str): set image to message
+            document (str): set document to message
+            video (str): set video to message
+            audio (str): set audio to message
+            parse_mode (str): 'markdown', 'html', or None
         """
         if message is not None:
             self.set_message(message)
         if image is not None:
             self.set_image(image)
+        if document is not None:
+            self.set_document(document)
+        if video is not None:
+            self.set_video(video)
+        if audio is not None:
+            self.set_audio(audio)
+        if parse_mode is not None:
+            self.set_parse_mode(parse_mode)
 
-        if self.image is not None:
-            self.user.send_photo(user_id, self.image, caption=self.message)
+        kwargs = {'parse_mode': self.parse_mode} if self.parse_mode else {}
+
+        if self.image:
+            self.user.send_photo(user_id, self.image, caption=self.message, **kwargs)
+        elif self.video:
+            self.user.send_video(user_id, self.video, caption=self.message, **kwargs)
+        elif self.document:
+            self.user.send_document(user_id, self.document, caption=self.message, **kwargs)
+        elif self.audio:
+            self.user.send_audio(user_id, self.audio, caption=self.message, **kwargs)
         else:
-            self.user.send_message(user_id, self.message)
+            self.user.send_message(user_id, self.message, **kwargs)
 
     def get_id_by_phone(self, phone_num: str) -> int:
         """
@@ -255,3 +399,28 @@ class Telegram:
             good_res = None
 
         return good_res
+
+    def get_user_info(self, user_id: int) -> dict:
+        """
+        Get information about a user by their ID
+
+        Args:
+            user_id (int): user ID
+        Return:
+            dict: user information (first_name, last_name, username, phone, etc.)
+        """
+        try:
+            user = self.user.get_users(user_id)
+            return {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'username': user.username,
+                'phone': user.phone_number,
+                'is_bot': user.is_bot,
+                'is_verified': user.is_verified,
+                'is_premium': user.is_premium if hasattr(user, 'is_premium') else False
+            }
+        except Exception as e:
+            print(f"Error getting user info: {e}")
+            return None

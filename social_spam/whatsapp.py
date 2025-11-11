@@ -1,4 +1,5 @@
 from alive_progress import alive_bar
+from pathlib import Path
 
 
 class WhatsApp:
@@ -11,6 +12,7 @@ class WhatsApp:
         self.phones = None
         self.image = None
         self.message = None
+        self.document = None
         self._pywhatkit = None
 
     @property
@@ -52,7 +54,9 @@ class WhatsApp:
                       phone_number: str,
                       amount: int,
                       text: str = None,
-                      image: str = None
+                      image: str = None,
+                      wait_time: int = 6,
+                      close_time: int = 1
                       ) -> None:
         """
         Start bombarding one user with messages
@@ -62,6 +66,8 @@ class WhatsApp:
             amount (int): number of sent messages
             text (str): message text
             image (str): message image
+            wait_time (int): time to wait before sending (seconds)
+            close_time (int): time before closing tab (seconds)
         """
         if text is not None:
             self.message = text
@@ -71,13 +77,15 @@ class WhatsApp:
         with alive_bar(amount, force_tty=True) as bar:
             for i in range(amount):
                 self.pywhatkit.sendwhatmsg_instantly(phone_no=phone_number, message=self.message,
-                                                     tab_close=True, close_time=1, wait_time=6)
+                                                     tab_close=True, close_time=close_time, wait_time=wait_time)
                 bar()
 
     def start_spamming(self,
                        phones: list = None,
                        text: str = None,
-                       image: str = None
+                       image: str = None,
+                       wait_time: int = 6,
+                       close_time: int = 1
                        ) -> None:
         """
         Start mailing to all elements of the array (1 message each)
@@ -86,6 +94,8 @@ class WhatsApp:
              phones (list): list of recipient numbers
              text (str): message text
              image (str): message image
+             wait_time (int): time to wait before sending (seconds)
+             close_time (int): time before closing tab (seconds)
         """
         if phones is not None:
             self.phones = phones
@@ -97,7 +107,7 @@ class WhatsApp:
         with alive_bar(range(len(self.phones)), force_tty=True) as bar:
             for phone in self.phones:
                 self.pywhatkit.sendwhatmsg_instantly(phone_no=phone, message=self.message,
-                                                     tab_close=True, close_time=1, wait_time=6)
+                                                     tab_close=True, close_time=close_time, wait_time=wait_time)
                 bar()
 
     def set_message(self, message: str) -> None:
@@ -109,6 +119,20 @@ class WhatsApp:
         """
         self.message = message
 
+    def set_file_message(self, path: str) -> None:
+        """
+        Get message text from .txt or .md file
+
+        Args:
+            path (str): path to file
+        """
+        if Path(path).is_file() and (Path(path).suffix == ".txt" or Path(path).suffix == ".md"):
+            md_str = ''
+            with open(path, "r", encoding="utf-8") as file:
+                for line in file:
+                    md_str += line
+            self.message = md_str
+
     def set_image(self, path) -> None:
         """
         Attach image to message
@@ -117,6 +141,16 @@ class WhatsApp:
             path (str): image path
         """
         self.image = path
+
+    def set_document(self, path: str) -> None:
+        """
+        Attach document to message
+
+        Args:
+            path (str): document path
+        """
+        if Path(path).is_file():
+            self.document = path
 
     def set_phone(self, phone_number: str) -> None:
         """

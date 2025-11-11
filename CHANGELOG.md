@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - SMTP connection now created only when needed (lazy initialization)
   - Improved connection handling and cleanup
 
+- **TgCrypto**: Made TgCrypto an optional dependency
+  - Fixes installation issues on macOS and other platforms where compilation fails
+  - TgCrypto is now in `extras_require` for optional faster Telegram encryption
+  - Install with: `pip install social-spam[telegram_speedup]`
+  - CI tests now more reliable across all platforms
+
 ### Changed
 - **Python Support**: Updated minimum Python version to 3.8
   - Added support for Python 3.9, 3.10, 3.11, and 3.12
@@ -32,6 +38,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Version**: Bumped version from 1.2.4 to 1.3.0
 
 ### Added
+
+#### 📧 Mail Module
+- **TLS Support**: Added support for TLS/STARTTLS connections (in addition to SSL)
+  - New parameter `use_tls` in `set_server()` method
+  - Now supports Gmail and other TLS-only SMTP servers
+- **Message Priority**: Added ability to set email priority
+  - New method `set_priority()` with options: 'urgent', 'normal', 'low'
+- **CC/BCC Support**: Added carbon copy and blind carbon copy functionality
+  - New method `set_cc_bcc()` to set CC and BCC recipients
+  - New method `send_message_with_cc_bcc()` for direct sending with copies
+- **Message Templates**: Added template system with variable substitution
+  - New method `set_template_message()` using `{{variable}}` syntax
+
+#### 💬 Telegram Module
+- **Document Support**: Added ability to send any file type
+  - New method `set_document()`
+- **Video Support**: Added video file sending
+  - New method `set_video()` (supports mp4, avi, mkv, mov, flv)
+- **Audio Support**: Added audio file sending
+  - New method `set_audio()` (supports mp3, wav, ogg, m4a, flac)
+- **Text Formatting**: Added Markdown and HTML formatting support
+  - New method `set_parse_mode()` with options: 'markdown', 'html', None
+- **User Information**: Added method to get user details
+  - New method `get_user_info()` returns profile information
+
+#### 🔵 VKontakte Module
+- **Document Support**: Added document file sending
+  - New method `set_document()`
+- **Audio Messages**: Added voice message support
+  - New method `set_audio_message()`
+- **Friends List**: Added ability to get friends list
+  - New method `get_friends()`
+- **User Information**: Added detailed user info retrieval
+  - New method `get_user_info()`
+
+#### 📲 WhatsApp Module
+- **File Message Loading**: Added ability to load messages from text files
+  - New method `set_file_message()` (supports .txt and .md files)
+- **Document Support**: Added document attachment preparation
+  - New method `set_document()`
+- **Customizable Delays**: Added delay customization
+  - New parameters `wait_time` and `close_time` in `start_bombing()` and `start_spamming()`
+
+#### Other
 - **requirements.txt**: Added for easier development setup
 - **Compatibility**: Verified compatibility with Pyrogram 2.0.x
 - **Better Error Handling**: Improved error handling in Mail module

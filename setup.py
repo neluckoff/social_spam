@@ -1,7 +1,7 @@
 from io import open
 from setuptools import setup
 
-version = '1.2.4'
+version = '1.3.0'
 
 with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
@@ -26,7 +26,14 @@ setup(
     license='MIT License, see LICENSE file',
 
     packages=['social_spam'],
-    install_requires=['alive_progress', 'pyrogram', 'vk-api', 'pywhatkit', 'TgCrypto'],
+    install_requires=[
+        'alive-progress>=3.0.0',
+        'pyrogram>=2.0.0',
+        'vk-api>=11.9.0',
+        'pywhatkit>=5.0',
+        'TgCrypto>=1.2.0'
+    ],
+    python_requires='>=3.8',
 
     classifiers=[
         'License :: OSI Approved :: MIT License',
@@ -37,8 +44,10 @@ setup(
         'Intended Audience :: Developers',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ]
 )

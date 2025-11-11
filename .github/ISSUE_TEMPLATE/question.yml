@@ -1,0 +1,56 @@
+name: ❓ Question
+description: Ask a question about using social_spam
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question? We're here to help!
+        
+        Before asking, please check:
+        - [Documentation](https://github.com/neluckoff/social_spam#documentation)
+        - [Examples](https://github.com/neluckoff/social_spam/tree/master/examples)
+        - [Existing Issues](https://github.com/neluckoff/social_spam/issues)
+        
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What would you like to know?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Which module is your question about?
+      options:
+        - Mail
+        - Telegram
+        - VKontakte
+        - WhatsApp
+        - General Usage
+        - Installation
+        - Other
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Provide any additional context that might help us understand your question better.
+      placeholder: What have you tried so far? What documentation have you read?
+    validations:
+      required: false
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Related Code (if applicable)
+      description: Share any relevant code
+      render: python
+    validations:
+      required: false
+

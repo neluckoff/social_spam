@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/neluckoff/social_spam#documentation
+    about: Read the documentation for usage examples and guides
+  - name: 💬 Discussions
+    url: https://github.com/neluckoff/social_spam/discussions
+    about: Ask questions and discuss ideas with the community
+

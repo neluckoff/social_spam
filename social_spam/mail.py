@@ -23,7 +23,9 @@ class Mail:
         self.mail_receiver = None
         self.username = None
         self.password = None
-        self.server = smtplib.SMTP_SSL('smtp.mail.ru', 465)
+        self.server = None
+        self.smtp_host = 'smtp.mail.ru'
+        self.smtp_port = 465
         self.message = MIMEMultipart()
 
     def set_message(self, header: str, message: str, attachments: list = None) -> None:
@@ -102,7 +104,26 @@ class Mail:
             smtp (str): smtp address
             port (int): port to smtp
         """
-        self.server = smtplib.SMTP_SSL(smtp, port)
+        self.smtp_host = smtp
+        self.smtp_port = port
+        # Reset server connection to use new settings
+        if self.server is not None:
+            try:
+                self.server.quit()
+            except:
+                pass
+            self.server = None
+
+    def _get_server(self):
+        """
+        Get or create SMTP server connection
+
+        Returns:
+            smtplib.SMTP_SSL: SMTP server connection
+        """
+        if self.server is None:
+            self.server = smtplib.SMTP_SSL(self.smtp_host, self.smtp_port)
+        return self.server
 
     def connect_mail(self, username: str, password: str) -> None:
         """
@@ -124,9 +145,11 @@ class Mail:
         Args:
             mail_receiver (str): email
         """
-        self.server.login(self.username, self.password)
-        self.server.sendmail(self.username, mail_receiver, self.message.as_string())
-        self.server.quit()
+        server = self._get_server()
+        server.login(self.username, self.password)
+        server.sendmail(self.username, mail_receiver, self.message.as_string())
+        server.quit()
+        self.server = None
 
     def spam_messages(self, mail_receiver: list, delay_time: float = 1) -> None:
         """
@@ -136,13 +159,15 @@ class Mail:
             mail_receiver (list): everyone's email
             delay_time (float): delay time between sending emails
         """
-        self.server.login(self.username, self.password)
+        server = self._get_server()
+        server.login(self.username, self.password)
         with alive_bar(len(mail_receiver), force_tty=True) as bar:
             for user in mail_receiver:
-                self.server.sendmail(self.username, user, self.message.as_string())
+                server.sendmail(self.username, user, self.message.as_string())
                 time.sleep(delay_time)
                 bar()
-        self.server.quit()
+        server.quit()
+        self.server = None
 
     def bombing_message(self, mail_receiver: str, amount: int, delay_time: float = 1) -> None:
         """
@@ -153,10 +178,12 @@ class Mail:
              amount (int): number of sent messages
              delay_time (float): delay time between sending emails
         """
-        self.server.login(self.username, self.password)
+        server = self._get_server()
+        server.login(self.username, self.password)
         with alive_bar(amount, force_tty=True) as bar:
             for i in range(amount):
-                self.server.sendmail(self.username, mail_receiver, self.message.as_string())
+                server.sendmail(self.username, mail_receiver, self.message.as_string())
                 time.sleep(delay_time)
                 bar()
-        self.server.quit()
+        server.quit()
+        self.server = None

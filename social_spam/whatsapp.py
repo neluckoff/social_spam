@@ -1,5 +1,3 @@
-import pywhatkit
-
 from alive_progress import alive_bar
 
 
@@ -13,6 +11,15 @@ class WhatsApp:
         self.phones = None
         self.image = None
         self.message = None
+        self._pywhatkit = None
+
+    @property
+    def pywhatkit(self):
+        """Lazy import of pywhatkit to avoid connection check at import time"""
+        if self._pywhatkit is None:
+            import pywhatkit
+            self._pywhatkit = pywhatkit
+        return self._pywhatkit
 
     def send_message(self,
                      phone: str = None,
@@ -35,11 +42,11 @@ class WhatsApp:
             self.image = image
 
         if self.image is None:
-            pywhatkit.sendwhatmsg_instantly(phone_no=self.phones, message=self.message,
-                                            tab_close=True, close_time=1, wait_time=6)
+            self.pywhatkit.sendwhatmsg_instantly(phone_no=self.phones, message=self.message,
+                                                 tab_close=True, close_time=1, wait_time=6)
         else:
-            pywhatkit.sendwhats_image(receiver=self.phones, img_path=self.image, caption=self.message,
-                                      tab_close=True, close_time=1, wait_time=6)
+            self.pywhatkit.sendwhats_image(receiver=self.phones, img_path=self.image, caption=self.message,
+                                           tab_close=True, close_time=1, wait_time=6)
 
     def start_bombing(self,
                       phone_number: str,
@@ -63,8 +70,8 @@ class WhatsApp:
 
         with alive_bar(amount, force_tty=True) as bar:
             for i in range(amount):
-                pywhatkit.sendwhatmsg_instantly(phone_no=phone_number, message=self.message,
-                                                tab_close=True, close_time=1, wait_time=6)
+                self.pywhatkit.sendwhatmsg_instantly(phone_no=phone_number, message=self.message,
+                                                     tab_close=True, close_time=1, wait_time=6)
                 bar()
 
     def start_spamming(self,
@@ -89,8 +96,8 @@ class WhatsApp:
 
         with alive_bar(range(len(self.phones)), force_tty=True) as bar:
             for phone in self.phones:
-                pywhatkit.sendwhatmsg_instantly(phone_no=phone, message=self.message,
-                                                tab_close=True, close_time=1, wait_time=6)
+                self.pywhatkit.sendwhatmsg_instantly(phone_no=phone, message=self.message,
+                                                     tab_close=True, close_time=1, wait_time=6)
                 bar()
 
     def set_message(self, message: str) -> None:

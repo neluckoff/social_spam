@@ -1,112 +1,291 @@
 <div align="center">
-    <h1>Social Spam</h1>
-    Package for convenient work with messages in all popular instant messengers
+
+# 📬 Social Spam
+
+### *Powerful Python package for messaging across multiple platforms*
+
+[![PyPI version](https://img.shields.io/pypi/v/social-spam?color=blue&style=for-the-badge)](https://pypi.org/project/social-spam/)
+[![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![License](https://img.shields.io/github/license/neluckoff/social_spam?style=for-the-badge)](LICENSE.md)
+[![Downloads](https://img.shields.io/pypi/dm/social-spam?style=for-the-badge)](https://pypi.org/project/social-spam/)
+
+[![Tests](https://img.shields.io/github/actions/workflow/status/neluckoff/social_spam/python-tests.yml?branch=master&label=tests&style=for-the-badge)](https://github.com/neluckoff/social_spam/actions)
+[![GitHub Stars](https://img.shields.io/github/stars/neluckoff/social_spam?style=for-the-badge)](https://github.com/neluckoff/social_spam/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/neluckoff/social_spam?style=for-the-badge)](https://github.com/neluckoff/social_spam/issues)
+
+---
+
+**Simple • Powerful • Cross-Platform • Well-Documented**
+
 </div>
-&nbsp;
 
-<div align="center">
-    <a href="https://github.com/neluckoff/social_spam/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/neluckoff/social_spam?style=flat-square"></a>
-    <a href="https://github.com/neluckoff/social_spam/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/neluckoff/social_spam?style=flat-square"></a>
-    <a href="https://github.com/neluckoff/social_spam"><img alt="GitHub license" src="https://img.shields.io/github/license/neluckoff/social_spam?style=flat-square"></a>
-    <a href="https://github.com/neluckoff/social_spam/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/neluckoff/social_spam?style=flat-square"></a>
-</div>
-&nbsp;
+## ✨ Features
 
-<i>On the current version, you have access to the following messengers: Telegram, WhatsApp, Vkontakte, Email.</i>
+<table>
+<tr>
+<td width="50%">
 
-## What's New in v1.3.0
+### 📱 Supported Platforms
+- 📧 **Email** - SMTP with attachments
+- 💬 **Telegram** - Pyrogram 2.0+ support  
+- 🔵 **VKontakte** - Full API integration
+- 📲 **WhatsApp** - Web automation
 
-✨ **Major Update** - The package has been fully updated and modernized!
+</td>
+<td width="50%">
 
-- ✅ Fixed all import issues with `pywhatkit` and `Mail` modules
-- ✅ Updated to support Python 3.8+ (including Python 3.12)
-- ✅ Compatible with Pyrogram 2.0+ 
-- ✅ All dependencies updated to latest versions
-- ✅ Better error handling and resource management
+### 🎯 Key Features
+- ✅ **Easy to use** - Simple and intuitive API
+- 🚀 **Async ready** - Fast and efficient
+- 📦 **Bulk sending** - Mass messaging support
+- 🎨 **Rich content** - Text, images, files
+- 🔄 **Auto-retry** - Built-in error handling
+- 📊 **Progress bars** - Visual feedback
 
-See [CHANGELOG.md](CHANGELOG.md) for full details.
+</td>
+</tr>
+</table>
 
-## Requirements
+## 🆕 What's New in v1.3.0
 
-- Python 3.8 or higher
-- Active internet connection
-- API credentials for the services you want to use
+🎉 **Major Update** - Completely modernized and fixed!
 
-## Documentation
-If you want to get acquainted with examples of using this package, you can follow the link of interest.
-
-- [Examples of interaction with Telegram](https://github.com/neluckoff/social_spam/blob/master/examples/telegram_examples.py)
-- [Examples of interaction with Vkontakte](https://github.com/neluckoff/social_spam/blob/master/examples/vkontakte_examples.py)
-- [Examples of interaction with WhatsApp](https://github.com/neluckoff/social_spam/blob/master/examples/whatsapp_examples.py)
-- [Examples of interaction with Email](https://github.com/neluckoff/social_spam/blob/master/examples/mail_examples.py)
-
-## Installation
-You can install the latest version with the command:
-
-```shell
-pip install social-spam
+```diff
++ ✅ Fixed all import issues (pywhatkit, Mail)
++ ✅ Python 3.8-3.12 support (including latest versions)
++ ✅ Pyrogram 2.0+ compatibility
++ ✅ All dependencies updated to latest stable versions
++ ✅ Improved error handling and resource management
++ ✅ Better performance and reliability
 ```
-Or you can install from GitHub:
 
-```shell
+📖 See [CHANGELOG.md](CHANGELOG.md) for complete details
+
+## 📦 Installation
+
+```bash
+# Install from PyPI (recommended)
+pip install social-spam
+
+# Or install from GitHub for latest dev version
 pip install -U https://github.com/neluckoff/social_spam/archive/master.zip
 ```
 
-## Sending an email
-**[More examples here!](https://github.com/neluckoff/social_spam/blob/master/examples/)**
+**Requirements:** Python 3.8+
+
+---
+
+## 🚀 Quick Start
+
+### 📧 Email Example
 
 ```python
 from social_spam import Mail
 
+# Initialize and connect
 mail = Mail()
-mail.connect_mail('test@inbox.ru', 'my_password')
+mail.connect_mail('your_email@inbox.ru', 'your_password')
 
-mail.set_message('Message from luckoff', 'How are you?', ['image.png'])
+# Send a simple message
+mail.set_message('Hello!', 'How are you?')
+mail.send_message('friend@gmail.com')
+
+# Send with attachments
+mail.set_message('Check this out!', 'See attached files', ['photo.jpg', 'document.pdf'])
 mail.send_message('friend@gmail.com')
 ```
 
-## Development
+### 💬 Telegram Example
 
-If you want to contribute to this project, here's how to set up your development environment:
+```python
+from social_spam import Telegram
 
-```shell
-# Clone the repository
+# Connect to Telegram
+tg = Telegram()
+tg.connect_user(
+    api_id=12345,
+    api_hash="your_api_hash",
+    phone_number="+1234567890"
+)
+
+# Send a message
+tg.send_message(user_id=123456789, message="Hello from social_spam!")
+
+# Send with image
+tg.send_message(
+    user_id=123456789, 
+    message="Check out this image!",
+    image="path/to/image.png"
+)
+
+# Mass messaging
+user_ids = [111111, 222222, 333333]
+tg.start_selective_spam(user_ids, message="Hello everyone!")
+```
+
+### 🔵 VKontakte Example
+
+```python
+from social_spam import Vkontakte
+
+# Connect with token
+vk = Vkontakte()
+vk.connect_user(token="your_vk_token")
+
+# Send message
+vk.send_message(user_id=123456, message="Привет!")
+
+# Send to multiple users
+vk.start_selective_spam(
+    chats=[111111, 222222], 
+    message="Всем привет!"
+)
+```
+
+### 📲 WhatsApp Example
+
+```python
+from social_spam import WhatsApp
+
+wa = WhatsApp()
+
+# Send instant message
+wa.send_message(
+    phone="+1234567890",
+    text="Hello from Python!"
+)
+
+# Send with image
+wa.send_message(
+    phone="+1234567890",
+    text="Check this out!",
+    image="image.jpg"
+)
+```
+
+---
+
+## 📚 Documentation & Examples
+
+Detailed examples for each platform:
+
+| Platform | Documentation | Example Code |
+|----------|--------------|--------------|
+| 📧 **Email** | [Guide](https://github.com/neluckoff/social_spam/blob/master/examples/mail_examples.py) | Full SMTP integration with attachments |
+| 💬 **Telegram** | [Guide](https://github.com/neluckoff/social_spam/blob/master/examples/telegram_examples.py) | Pyrogram-based messaging |
+| 🔵 **VKontakte** | [Guide](https://github.com/neluckoff/social_spam/blob/master/examples/vkontakte_examples.py) | VK API integration |
+| 📲 **WhatsApp** | [Guide](https://github.com/neluckoff/social_spam/blob/master/examples/whatsapp_examples.py) | Web automation |
+
+---
+
+## 🎯 Use Cases
+
+- 📢 **Bulk Notifications** - Send updates to multiple recipients
+- 🤖 **Chatbots** - Build automated messaging bots
+- 📊 **Marketing** - Automated marketing campaigns
+- 🔔 **Alerts** - System notifications and alerts
+- 💼 **Business** - Customer communication
+- 🎓 **Educational** - Learning messaging APIs
+
+## 🛠️ Advanced Usage
+
+<details>
+<summary><b>Email with HTML Templates</b></summary>
+
+```python
+mail = Mail()
+mail.connect_mail('your_email@mail.ru', 'password')
+mail.set_message_html('Newsletter', 'template.html', ['logo.png'])
+mail.send_message('subscriber@example.com')
+```
+</details>
+
+<details>
+<summary><b>Telegram Batch Messaging</b></summary>
+
+```python
+tg = Telegram()
+tg.connect_user(api_id=12345, api_hash="hash", phone_number="+123456")
+
+# Send to all your contacts
+tg.start_all_spam(message="Important update!")
+
+# Message bombing (use responsibly!)
+tg.start_bombing(user_id=123456, amount=10, message="Hello!")
+```
+</details>
+
+<details>
+<summary><b>Custom SMTP Server</b></summary>
+
+```python
+mail = Mail()
+mail.set_server('smtp.gmail.com', 587)  # Custom server
+mail.connect_mail('your@gmail.com', 'app_password')
+```
+</details>
+
+---
+
+## 🤝 Contributing
+
+We love contributions! Here's how you can help:
+
+- 🐛 [Report Bugs](https://github.com/neluckoff/social_spam/issues/new?template=bug_report.yml)
+- 💡 [Request Features](https://github.com/neluckoff/social_spam/issues/new?template=feature_request.yml)
+- 📝 [Improve Documentation](https://github.com/neluckoff/social_spam/blob/master/.github/CONTRIBUTING.md)
+- 🔧 [Submit Pull Requests](https://github.com/neluckoff/social_spam/pulls)
+
+**Development Setup:**
+```bash
 git clone https://github.com/neluckoff/social_spam.git
 cd social_spam
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Install in development mode
 pip install -e .
 ```
 
-## Contributing
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for detailed guidelines.
 
-We welcome contributions! Please see our [Contributing Guidelines](.github/CONTRIBUTING.md) for details on:
+---
 
-- How to report bugs
-- How to suggest enhancements
-- How to submit pull requests
-- Development setup
-- Code style guidelines
+## 💬 Community & Support
 
-Before contributing, please read:
-- [Code of Conduct](.github/CODE_OF_CONDUCT.md)
-- [Security Policy](.github/SECURITY.md)
+<div align="center">
 
-### Maintainers
-- Creator: [@neluckoff](https://github.com/neluckoff)
-- Updated for modern Python (v1.3.0): [@neluckoff](https://github.com/neluckoff)
+| 💬 Type | 🔗 Link |
+|---------|---------|
+| 🐛 **Bug Reports** | [Create Issue](https://github.com/neluckoff/social_spam/issues/new?template=bug_report.yml) |
+| 💡 **Feature Requests** | [Create Issue](https://github.com/neluckoff/social_spam/issues/new?template=feature_request.yml) |
+| ❓ **Questions** | [Ask Question](https://github.com/neluckoff/social_spam/issues/new?template=question.yml) |
+| 💬 **Discussions** | [Join Discussion](https://github.com/neluckoff/social_spam/discussions) |
+| 📧 **Email** | [neluckoff@gmail.com](mailto:neluckoff@gmail.com) |
 
-## Community & Support
+</div>
 
-- 🐛 [Report a Bug](https://github.com/neluckoff/social_spam/issues/new?template=bug_report.yml)
-- 💡 [Request a Feature](https://github.com/neluckoff/social_spam/issues/new?template=feature_request.yml)
-- ❓ [Ask a Question](https://github.com/neluckoff/social_spam/issues/new?template=question.yml)
-- 💬 [Join Discussions](https://github.com/neluckoff/social_spam/discussions)
+---
 
-## License
+## 📄 License
 
-- Copyright © 2022-2025 [neluckoff](https://github.com/neluckoff).
-- This project is [MIT](https://github.com/neluckoff/social_spam/blob/master/LICENSE.md) licensed.
+This project is licensed under the **MIT License** - see the [LICENSE.md](LICENSE.md) file for details.
+
+```
+Copyright © 2022-2025 neluckoff
+```
+
+---
+
+## ⭐ Show Your Support
+
+If you find this project useful, please consider:
+
+- ⭐ **Starring** the repository
+- 🐦 **Sharing** it with others
+- 💖 **Sponsoring** the development
+
+<div align="center">
+
+**Made with ❤️ by [@neluckoff](https://github.com/neluckoff)**
+
+[⬆ Back to Top](#-social-spam)
+
+</div>

@@ -138,7 +138,7 @@ Thumbs.db
 *.session-journal
 my_account.session*
 
-# Test files
-test_*.py
-*_test.py
+# Test files (but not the tests/ directory)
+/test_*.py
+/*_test.py
 

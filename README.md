@@ -4,18 +4,19 @@
 
 ### *Powerful Python package for messaging across multiple platforms*
 
-[![PyPI version](https://img.shields.io/pypi/v/social-spam?color=blue&style=for-the-badge)](https://pypi.org/project/social-spam/)
-[![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/github/license/neluckoff/social_spam?style=for-the-badge)](LICENSE.md)
-[![Downloads](https://img.shields.io/pypi/dm/social-spam?style=for-the-badge)](https://pypi.org/project/social-spam/)
+[![PyPI version](https://badge.fury.io/py/social-spam.svg)](https://pypi.org/project/social-spam/)
+[![Python](https://img.shields.io/pypi/pyversions/social-spam.svg)](https://pypi.org/project/social-spam/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/neluckoff/social_spam/python-tests.yml?branch=master&label=tests&style=for-the-badge)](https://github.com/neluckoff/social_spam/actions)
-[![GitHub Stars](https://img.shields.io/github/stars/neluckoff/social_spam?style=for-the-badge)](https://github.com/neluckoff/social_spam/stargazers)
-[![GitHub Issues](https://img.shields.io/github/issues/neluckoff/social_spam?style=for-the-badge)](https://github.com/neluckoff/social_spam/issues)
+[![GitHub Repo stars](https://img.shields.io/github/stars/neluckoff/social_spam?style=social)](https://github.com/neluckoff/social_spam/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/neluckoff/social_spam?style=social)](https://github.com/neluckoff/social_spam/network/members)
 
 ---
 
 **Simple • Powerful • Cross-Platform • Well-Documented**
+
+Supports: Telegram, VKontakte, WhatsApp, Email
 
 </div>
 

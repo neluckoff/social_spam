@@ -29,13 +29,9 @@ jobs:
         pip install -r requirements.txt
         pip install -e .
     
-    - name: Test imports
+    - name: Run tests
       run: |
-        python -c "from social_spam import Mail, Telegram, Vkontakte, WhatsApp; print('✅ All imports successful')"
-    
-    - name: Check version
-      run: |
-        python -c "import social_spam; print(f'Version: {social_spam.__version__}')"
+        python tests/test_imports.py
 
   lint:
     runs-on: ubuntu-latest
